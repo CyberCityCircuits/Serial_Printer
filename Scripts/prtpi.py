@@ -1,8 +1,6 @@
 
 import serial #pySerial
-from PIL import Image
-
-com = 'COM1'
+com = '/dev/ttyUSB0'
 baud = 38400
 width = 42
 cutfeed = 6
@@ -129,7 +127,6 @@ def toprow():
     ser.write(b"\xBF")
     linefeed()
     
-    
 #rotates characters clockwise
 def rotatecw(item):
     if not ser.isOpen():
@@ -139,58 +136,16 @@ def rotatecw(item):
     elif item == 1:#rotates
         ser.write(b"\x1B\x56\x49")
     
-#sets justification
+#sets justification (not working currently in testing)
 def setjust(item):
     if not ser.isOpen():
         ser.open()    
     if item == 0:#left
-        ser.write(b"\x1B\x61\x00")
+        ser.write(b"\x1B\x61\x48")
     elif item == 1:#right
-        ser.write(b"\x1B\x61\x02")
+        ser.write(b"\x1B\x61\x50")
     elif item == 2:#center
-        ser.write(b"\x1B\x61\x01")
+        ser.write(b"\x1B\x61\x49")
     else:
         print("Invalid Entry")
-
-#sets font    
-def setfont(item):
-    if not ser.isOpen():
-        ser.open()        
-    if item == 0:#Font A (Full Size)
-        ser.write(b"\x1B\x4D\x00")
-    elif item == 1:#Font B (Half Size)
-        ser.write(b"\x1B\x4D\x01")
         
-#feeds five lines
-def feed05():
-    if not ser.isOpen():
-        ser.open()    
-    ser.write(b"\x1B\x64\x05")
-    
-#feeds lines (NOT WORKING)
-def feed(item):
-    item = str(item).zfill(2)
-    if not ser.isOpen():
-        ser.open()    
-    #ser.write(b("\x1B\x64\x"+item))
-    
-def setsize(item):
-    if not ser.isOpen():
-        ser.open()        
-    if item == 0:#Size Normal
-        ser.write(b"\x1D\x21\x00")
-    elif item == 1:#Size Double
-        ser.write(b"\x1D\x21\x11")    
-    elif item == 2:#Size Triple
-        ser.write(b"\x1D\x21\x22")  
-        
-def barcode(item):
-    if not ser.isOpen():
-        ser.open()        
-    
-def convert_img(item):
-    global img
-    img = Image.open(item)
-    img = img.convert('L')
-    img.save("logo_c.bmp")
-    

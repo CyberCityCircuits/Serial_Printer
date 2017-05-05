@@ -5,8 +5,7 @@ Created on Tue Apr 18 14:41:44 2017
 @author: DREAM
 """
 
-import prt1, prt1, prt1
-
+import prt1
 from time import sleep
 
 def sw0000():
