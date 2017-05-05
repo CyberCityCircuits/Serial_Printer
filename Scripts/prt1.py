@@ -47,6 +47,16 @@ def end():
     cutpaper()
     close()
         
+#feeds five lines
+def feed05():
+    if not ser.isOpen():
+        ser.open()    
+    ser.write(b"\x1B\x64\x05")    
+
+#resets all commands sent to printer
+def init():
+    ser.write(b"\x1B\x40")
+        
 #Feeds a single line.
 def linefeed():
     if not ser.isOpen():
@@ -71,8 +81,58 @@ def prtcent(item):
 #prints a list.        
 def prtlst(item):
     for i in item:
-        prtcent(i)           
+        prtcent(i)          
+        
+#rotates characters clockwise
+def rotatecw(item):
+    if not ser.isOpen():
+        ser.open()    
+    if item == 0:#cancels
+        ser.write(b"\x1B\x56\x48")
+    elif item == 1:#rotates
+        ser.write(b"\x1B\x56\x49")
 
+#sets font    
+def setfont(item):
+    if not ser.isOpen():
+        ser.open()        
+    if item == 0:#Font A (Full Size)
+        ser.write(b"\x1B\x4D\x00")
+    elif item == 1:#Font B (Half Size)
+        ser.write(b"\x1B\x4D\x01")
+
+#sets justification
+def setjust(item):
+    if not ser.isOpen():
+        ser.open()    
+    if item == 0:#left
+        ser.write(b"\x1B\x61\x00")
+    elif item == 1:#right
+        ser.write(b"\x1B\x61\x02")
+    elif item == 2:#center
+        ser.write(b"\x1B\x61\x01")
+    else:
+        print("Invalid Entry")        
+        
+def setsize(item):
+    if not ser.isOpen():
+        ser.open()        
+    if item == 0:#Size Normal
+        ser.write(b"\x1D\x21\x00")
+    elif item == 1:#Size Double
+        ser.write(b"\x1D\x21\x11")    
+    elif item == 2:#Size Triple
+        ser.write(b"\x1D\x21\x22")          
+        
+#print text upside down
+def upsidedown(item):
+    if not ser.isOpen():
+        ser.open()        
+    if item == 0:#right side up
+        ser.write(b"\x1B\x7B\x02")
+    elif item == 1:#upside down
+        ser.write(b"\x1B\x7B\x01")  
+        
 ###The commands below are for making tables.###
 
 #Makes a Bottom Line Divider
@@ -128,44 +188,7 @@ def toprow():
         ser.write(b"\xC4")
     ser.write(b"\xBF")
     linefeed()
-    
-    
-#rotates characters clockwise
-def rotatecw(item):
-    if not ser.isOpen():
-        ser.open()    
-    if item == 0:#cancels
-        ser.write(b"\x1B\x56\x48")
-    elif item == 1:#rotates
-        ser.write(b"\x1B\x56\x49")
-    
-#sets justification
-def setjust(item):
-    if not ser.isOpen():
-        ser.open()    
-    if item == 0:#left
-        ser.write(b"\x1B\x61\x00")
-    elif item == 1:#right
-        ser.write(b"\x1B\x61\x02")
-    elif item == 2:#center
-        ser.write(b"\x1B\x61\x01")
-    else:
-        print("Invalid Entry")
 
-#sets font    
-def setfont(item):
-    if not ser.isOpen():
-        ser.open()        
-    if item == 0:#Font A (Full Size)
-        ser.write(b"\x1B\x4D\x00")
-    elif item == 1:#Font B (Half Size)
-        ser.write(b"\x1B\x4D\x01")
-        
-#feeds five lines
-def feed05():
-    if not ser.isOpen():
-        ser.open()    
-    ser.write(b"\x1B\x64\x05")
     
 #feeds lines (NOT WORKING)
 def feed(item):
@@ -174,20 +197,13 @@ def feed(item):
         ser.open()    
     #ser.write(b("\x1B\x64\x"+item))
     
-def setsize(item):
-    if not ser.isOpen():
-        ser.open()        
-    if item == 0:#Size Normal
-        ser.write(b"\x1D\x21\x00")
-    elif item == 1:#Size Double
-        ser.write(b"\x1D\x21\x11")    
-    elif item == 2:#Size Triple
-        ser.write(b"\x1D\x21\x22")  
-        
+#prints barcodes (NOT WORKING)
 def barcode(item):
     if not ser.isOpen():
         ser.open()        
     
+
+        
 def convert_img(item):
     global img
     img = Image.open(item)
